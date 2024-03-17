@@ -4,116 +4,117 @@ import SettingsInput from "./SettingsInput";
 import { useMyContext } from "../hooks/useMyContext";
 import CheckedIcon from "../assets/images/checked.svg";
 import Button from "./Button";
-import { useState } from "react";
-function Settings() {
+
+
+interface Props {
+    setIsOpenSettings: React.Dispatch<React.SetStateAction<boolean>>;
+    isOpenSettings: boolean;
+}
+
+function Settings({ setIsOpenSettings, isOpenSettings }: Props) {
     const myContext = useMyContext();
-    // ამ მომენტში true იყოს მაგრამ, შედმდეგ false-ად უნდა გადავაკეთო.
-    const [isOpen, setIsOpenSettings] = useState(false);
+    console.log(myContext?.savedStates.activeFont)
+
+    const colors = ["#F87070", "#70F3F8", "#D881F8"];
+    const fonts = ["font-kumbh", "font-roboto", "font-monoSpace"];
+
+    function activeFonthandleClick(i: number) {
+        myContext?.setActiveFont(fonts[i]);
+    }
+
+    function activeColorhandleClick(i: number) {
+        myContext?.setActiveColor(colors[i]);
+    }
     return (
-        <div className="">
-            <img
-                onClick={() => setIsOpenSettings(true)}
-                className="m-auto block"
-                src={settingsIcon}
-                alt=""
-            />
-            {isOpen && (
-
-
-                <div className="bg-white w-[327px] py-[20px] m-auto rounded-[12px]">
-                    <div className="flex justify-between items-center px-[20px]">
-                        <h2 className="text-[20px] font-bold">Settings</h2>
-                        <img
-                            className="cursor-pointer"
-                            onClick={() => setIsOpenSettings(false)}
-                            src={close}
-                            alt=""
-                        />
-                    </div>
-                    <div className="w-[100%] bg-[#E3E1E1] h-[1px] mt-[15px] mb-[20px]"></div>
-                    <form action="" className="px-[20px]">
-                        <h3 className="text-center font-bold text-[11px]">
-                            TIME ( MINUTES )
-                        </h3>
-                        <div className="my-[30px] flex flex-col gap-[10px] items-center">
-                            <SettingsInput
-                                heading="pomodoro"
-                                inputValue={myContext?.pomodoroValue}
-                                setInputValue={myContext?.setPomodoroValue}
-                            />
-                            <SettingsInput
-                                heading="short break"
-                                inputValue={myContext?.shortBreakValue}
-                                setInputValue={myContext?.setShortBreakValue}
-                            />
-                            <SettingsInput
-                                heading="long break"
-                                inputValue={myContext?.longBreakValue}
-                                setInputValue={myContext?.setLongBreakValue}
+        <>
+            <div className="">
+                <img
+                    onClick={() => setIsOpenSettings(true)}
+                    className="m-auto block cursor-pointer"
+                    src={settingsIcon}
+                    alt=""
+                />
+                {isOpenSettings && (
+                    <div className="bg-white w-[327px] md:w-[588px] py-[20px] m-auto rounded-[12px] z-[99] absolute top-[50%] translate-x-[-50%] left-[50%] translate-y-[-50%] ">
+                        <div className="flex justify-between items-center px-[50px]">
+                            <h2 className="text-[20px] font-bold">Settings</h2>
+                            <img
+                                className="cursor-pointer"
+                                onClick={() => setIsOpenSettings(false)}
+                                src={close}
+                                alt=""
                             />
                         </div>
-                        <div className="w-[100%] bg-[#E3E1E1] h-[1px]"></div>
-                        <div className="flex flex-col gap-[20px] my-[20px]">
-                            <h2 className="font-bold  text-center uppercase text-[11px]">
-                                font
-                            </h2>
+                        <div className="w-[100%] bg-[#E3E1E1] h-[1px] mt-[15px] mb-[20px]"></div>
+                        <form action="" className="px-[20px] md:px-[50px]">
+                            <h3 className="text-center md:text-left font-bold text-[11px] md:text-[13px]">
+                                TIME ( MINUTES )
+                            </h3>
+                            <div className="my-[30px] flex flex-col gap-[10px] items-center md:flex-row md:justify-between">
+                                <SettingsInput
+                                    heading="pomodoro"
+                                    inputValue={myContext?.pomodoroValue}
+                                    setInputValue={myContext?.setPomodoroValue}
+                                />
+                                <SettingsInput
+                                    heading="short break"
+                                    inputValue={myContext?.shortBreakValue}
+                                    setInputValue={myContext?.setShortBreakValue}
+                                />
+                                <SettingsInput
+                                    heading="long break"
+                                    inputValue={myContext?.longBreakValue}
+                                    setInputValue={myContext?.setLongBreakValue}
+                                />
+                            </div>
+                            <div className="w-[100%] bg-[#E3E1E1] h-[1px]"></div>
+                            <div className="flex flex-col gap-[20px] my-[20px] md:flex-row md:items-center md:justify-between">
+                                <h2 className="font-bold  text-center uppercase text-[11px] md:text-[13px] md:tracking-[7px]">
+                                    font
+                                </h2>
 
-                            {/*need add hover border */}
-                            <div className="flex justify-center gap-[10px] items-center group">
-                                {Array.from({ length: 3 }, (_, index) => (
-                                    <div
-                                        key={index}
-                                        onClick={() => myContext?.setActiveFontColorIndex(index)}
-                                        className={`group grid place-items-center w-[40px] h-[40px] cursor-pointer ${myContext?.activeFontColorIndex == index
-                                            ? "bg-darkBlueBlack [&>span]:text-white [&>span]:font-bold"
-                                            : "bg-ghostWhite [&>span]:text-darkBlueBlack [&>span]:font-semibold [&>span]:opacity-70"
-                                            }  border-solid border-[4px] box-content  hover:outline-hawkesBlue hover:outline-[1px] hover:outline-double border-white h-[40px] rounded-[50%] grid  cursor-pointer`}
-                                    >
-                                        <span
-                                            className={`text-[15px] ${index == 0
-                                                ? "font-kumbh"
-                                                : index == 1
-                                                    ? "font-roboto"
-                                                    : "font-monoSpace"
-                                                }`}
+                                <div className="flex justify-center gap-[10px] items-center group">
+                                    {fonts.map((font, index) => (
+                                        <div
+                                            className={`${myContext?.activeFont == font ? "bg-darkBlueBlack [&>span]:text-white [&>span]:font-bold" : "bg-ghostWhite [&>span]:text-darkBlueBlack [&>span]:font-semibold [&>span]:opacity-70"} group  place-items-center  cursor-pointer border-solid border-[4px] box-content  hover:outline-hawkesBlue hover:outline-[1px] hover:outline-double border-white w-[40px] h-[40px] rounded-[50%] grid  cursor-pointe`}
+                                            key={index}
+                                            onClick={() => activeFonthandleClick(index)}
                                         >
-                                            Aa
-                                        </span>
-                                    </div>
-                                ))}
+                                            <span className={`text-[15px] ${font}`}>Aa</span>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                        <div className="w-[100%] bg-[#E3E1E1] h-[1px]"></div>
-                        <div className="flex flex-col gap-[20px] mt-[20px]">
-                            <h2 className="uppercase text-center text-[11px] font-bold">
-                                color
-                            </h2>
-                            <div className="flex gap-[10px]  justify-center items-center">
-                                {Array.from({ length: 3 }, (_, index) => (
-                                    <div
-                                        onClick={() => myContext?.setActiveColorIndex(index)}
-                                        key={index}
-                                        className={`${index == 0
-                                            ? "bg-red"
-                                            : index == 1
-                                                ? "bg-tiffanyBlue"
-                                                : "bg-purple"
-                                            } w-[40px] border-solid border-[4px] box-content  hover:outline-hawkesBlue hover:outline-[1px] hover:outline-double border-white h-[40px] rounded-[50%] grid place-items-center cursor-pointer`}
-                                    >
-                                        {myContext?.activeColorIndex === index && (
-                                            <img src={CheckedIcon} />
-                                        )}
-                                    </div>
-                                ))}
+                            <div className="w-[100%] bg-[#E3E1E1] h-[1px]"></div>
+
+                            <div className="flex flex-col gap-[20px] mt-[20px] md:flex-row md:items-center md:justify-between">
+                                <h2 className="uppercase text-center text-[11px] font-bold md:text-[13px] md:tracking-[7px]">
+                                    color
+                                </h2>
+                                <div className="flex gap-[10px]  justify-center items-center">
+                                    {colors.map((color, index) => (
+                                        <div
+                                            key={index}
+                                            onClick={() => activeColorhandleClick(index)}
+                                            style={{ background: color }}
+                                            className={`  w-[40px] border-solid border-[4px] box-content  hover:outline-hawkesBlue hover:outline-[1px] hover:outline-double border-white h-[40px] rounded-[50%] grid place-items-center cursor-pointer`}
+                                        >
+                                            {color === myContext?.activeColor && (
+                                                <img src={CheckedIcon} />
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                        <div className="relative w-[100%] h-[40px]">
-                            <Button />
-                        </div>
-                    </form>
-                </div>
-            )}
-        </div>
+                            <div className="relative w-[100%] h-[40px]">
+                                <Button />
+                            </div>
+                        </form>
+                    </div >
+                )
+                }
+            </div >
+        </>
     );
 }
 

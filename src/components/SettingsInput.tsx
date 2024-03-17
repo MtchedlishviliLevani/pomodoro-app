@@ -20,9 +20,9 @@ function SettingsInput({ heading, inputValue, setInputValue }: InputProps) {
         if (setState) setState(state => (state > 0 ? state - 1 : state));
     }
     return (
-        <div className="flex gap-[19px] justify-between items-center">
+        <div className="flex gap-[6px] justify-between items-center md:flex-col md:items-start">
             <label
-                className="font-bold text-darkBlueBlack font-kumbh text-[12px] opacity-45"
+                className="font-bold text-darkBlueBlack font-kumbh text-[12px] md:text-[13px]  opacity-45"
                 htmlFor=""
             >
                 {heading}

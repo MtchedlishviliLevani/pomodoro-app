@@ -13,7 +13,7 @@
   }
 
   body {
-    @apply bg-bgColor font-kumbh;
+    @apply bg-bgColor  w-[100%] min-h-[100vh];
   }
 
   input[type="number"]::-webkit-inner-spin-button,

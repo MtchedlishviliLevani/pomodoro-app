@@ -5,65 +5,71 @@ function Timer() {
     const myContext = useMyContext();
     const [isCounting, setIsCounting] = useState(false);
 
-
-
-
-    // new code
-    const [seconds, setSeconds] = useState<number | undefined>(
-        myContext?.activeButton && myContext.activeButton * 60
+    const [milliSeconds, setMiliSeconds] = useState<number | undefined>(
+        myContext?.activeButton && myContext.activeButton * 60000
     );
 
+
     useEffect(() => {
-        setSeconds(myContext?.activeButton && myContext.activeButton * 60);
+        setMiliSeconds(myContext?.activeButton && myContext.activeButton * 60000);
     }, [myContext?.activeButton]);
 
     useEffect(() => {
         if (isCounting) {
             const countDownSeconds = setInterval(() => {
-                setSeconds((prevSeconds) => {
+                setMiliSeconds((prevSeconds) => {
                     if (prevSeconds === 0) {
                         clearInterval(countDownSeconds);
-                        return 0;
+                        setIsCounting(false);
+                        setMiliSeconds(myContext?.activeButton ?? 0 * 60000)
                     }
-                    return prevSeconds && prevSeconds - 1;
+                    return prevSeconds && prevSeconds - 10;
                 });
-            }, 1000);
+            }, 10);
             return () => clearInterval(countDownSeconds);
         }
-    }, [isCounting, seconds]);
+    }, [isCounting, milliSeconds, myContext]);
 
-    const minutes = Math.floor((seconds ?? 0) / 60);
-    const remainingSeconds = (seconds ?? 0) % 60;
-    const totalSeconds = ((myContext?.activeButton ?? 0) * 60);
+    const minutes = Math.floor((milliSeconds ?? 0) / 60000);
+    const remainingSeconds = Math.floor(((milliSeconds ?? 0) / 1000) % 60);
+    const totalSeconds = (myContext?.activeButton ?? 0) * 60000;
 
     const progressPercentage =
-        ((totalSeconds - (seconds || 0)) / totalSeconds) * 100;
-    console.log(totalSeconds + "totalSeconds");
-    console.log(remainingSeconds + "remSeconds")
+        ((totalSeconds - (milliSeconds || 0)) / totalSeconds) * 100;
+
+
+
 
     const startNstopClick = () => {
         setIsCounting((start) => !start);
+
     };
     return (
         <div
             style={{
                 background: "linear-gradient(315deg, #2E325A 0%, #0E112A 100%)",
             }}
-            className=" shadow-custom grid place-items-center w-[370px] h-[370px] rounded-[50%] m-auto"
+            className="relative z-40 shadow-custom grid place-items-center w-[300px] h-[300px] lg:w-[370px] lg:h-[370px] rounded-[50%] m-auto"
         >
+            <svg className="absolute rotate-[270deg] z-[41]" viewBox="0 0 100 100">
+                <circle className="stroke-[3px] "
+                    cx="50"
+                    cy="50"
+                    r="40.8"
+                    strokeLinecap="round"
+                    strokeDasharray={256}
+                    strokeDashoffset={-256 * (progressPercentage / 100)}
+                    fill="none"
+                    stroke={myContext?.savedStates.activeColor}
+                ></circle>
+            </svg>
             <div
-                style={{
-                    background: `conic-gradient(transparent ${progressPercentage}%, #F87070 0%)`,
-                }}
-                className="relative before:content-[''] before:w-[3px] before:h-[3px] before:bg-white before:absolute grid place-items-center  rounded-[50%]  w-[340px] h-[340px] border-solid border-[15px] border-darkBlueBlack "
+                className="grid place-items-center  rounded-[50%] w-[267px] h-[267px] lg:w-[340px] sm:w-[270px] lg:h-[340px] border-solid border-[8px] lg:border-[15px] border-darkBlueBlack "
             >
-
-
-                <div className="w-[290px] h-[290px] bg-darkBlueBlack rounded-[50%] grid place-items-center gap-[15px]">
-                    <div className="flex flex-col">
-                        <h3 className="text-[100px] font-bold text-hawkesBlue">
-                            {minutes.toString().padStart(2, "0")}
-                            :
+                <div className="w-[250px] lg:w-[290px] h-[250px] lg:h-[290px]   bg-darkBlueBlack rounded-[50%] grid place-items-center gap-[15px]">
+                    <div className="flex flex-col relative z-50">
+                        <h3 className="text-[80px] lg:text-[100px] font-bold text-hawkesBlue">
+                            {minutes.toString().padStart(2, "0")}:
                             {remainingSeconds.toString().padStart(2, "0")}
                         </h3>
                         <span

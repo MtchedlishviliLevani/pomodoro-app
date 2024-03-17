@@ -13,6 +13,13 @@ export default {
         darkBlueBlack: "#161932",
         ghostWhite: "#EFF1FA",
       },
+      screens: {
+        sm: "480px",
+        md: "768px",
+        lg: "992px",
+        xl: "1200px",
+        "2xl": "1640px",
+      },
       boxShadow: {
         custom: "50px 50px 100px 0px #121530, -50px -50px 100px 0px #272C5A",
       },
