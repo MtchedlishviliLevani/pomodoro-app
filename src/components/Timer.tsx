@@ -1,44 +1,43 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, CSSProperties } from "react";
 import { useMyContext } from "../hooks/useMyContext";
-
-function Timer() {
+interface Props {
+    isCounting: boolean;
+    setIsCounting: React.Dispatch<React.SetStateAction<boolean>>
+}
+function Timer({ setIsCounting, isCounting }: Props) {
     const myContext = useMyContext();
-    const [isCounting, setIsCounting] = useState(false);
-
-    const [milliSeconds, setMiliSeconds] = useState<number | undefined>(
-        myContext?.activeButton && myContext.activeButton * 60000
+    const [seconds, setSeconds] = useState<number | undefined>(
+        myContext?.activeButton && myContext.activeButton * 60
     );
 
-
     useEffect(() => {
-        setMiliSeconds(myContext?.activeButton && myContext.activeButton * 60000);
-    }, [myContext?.activeButton]);
+        setSeconds(myContext?.activeButton && myContext.activeButton * 60);
+    }, [myContext?.activeButton,]);
 
     useEffect(() => {
         if (isCounting) {
             const countDownSeconds = setInterval(() => {
-                setMiliSeconds((prevSeconds) => {
+                setSeconds((prevSeconds) => {
                     if (prevSeconds === 0) {
                         clearInterval(countDownSeconds);
-                        setIsCounting(false);
-                        setMiliSeconds(myContext?.activeButton ?? 0 * 60000)
+                        setIsCounting(false)
+                        return (myContext?.activeButton ?? 0) * 60
+                        // setMiliSeconds(myContext?.activeButton ?? 0 * 60000)
+                    } else {
+                        return prevSeconds && prevSeconds - 1;
                     }
-                    return prevSeconds && prevSeconds - 10;
                 });
-            }, 10);
+            }, 1000);
             return () => clearInterval(countDownSeconds);
         }
-    }, [isCounting, milliSeconds, myContext]);
+    }, [isCounting, seconds, myContext, setIsCounting]);
 
-    const minutes = Math.floor((milliSeconds ?? 0) / 60000);
-    const remainingSeconds = Math.floor(((milliSeconds ?? 0) / 1000) % 60);
-    const totalSeconds = (myContext?.activeButton ?? 0) * 60000;
+    const minutes = Math.floor((seconds ?? 0) / 60);
+    const remainingSeconds = Math.floor(((seconds ?? 0)) % 60);
+    const totalSeconds = (myContext?.activeButton ?? 0) * 60;
 
     const progressPercentage =
-        ((totalSeconds - (milliSeconds || 0)) / totalSeconds) * 100;
-
-
-
+        ((totalSeconds - (seconds || 0)) / totalSeconds) * 100;
 
     const startNstopClick = () => {
         setIsCounting((start) => !start);
@@ -73,8 +72,9 @@ function Timer() {
                             {remainingSeconds.toString().padStart(2, "0")}
                         </h3>
                         <span
+                            style={{ "--textColor": myContext?.savedStates.activeColor } as CSSProperties}
                             onClick={startNstopClick}
-                            className="hover:text-red cursor-pointer font-bold text-[16px] text-center tracking-[7px] text-hawkesBlue uppercase"
+                            className={`hover:text-[--textColor] cursor-pointer font-bold text-[16px] text-center tracking-[7px] text-hawkesBlue uppercase`}
                         >
                             {isCounting ? "Pause" : "Start"}
                         </span>

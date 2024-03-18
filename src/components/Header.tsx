@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useMyContext } from "../hooks/useMyContext";
 
-function Header() {
+function Header({ isCounting }: { isCounting: boolean }) {
     const myContext = useMyContext();
     const navigationList = ["pomodoro", "short break", "long break"];
 
     const handleClick = (i: number) => {
-        myContext?.setActiveButtonIndex(i);
+        if (isCounting === false) myContext?.setActiveButtonIndex(i);
     };
     useEffect(() => {
         if (myContext?.activeButtonIndex === 0) {
@@ -16,13 +16,10 @@ function Header() {
         } else if (myContext?.activeButtonIndex === 2) {
             myContext?.setActiveButton(myContext?.savedStates.longBreakValue);
         }
-    }, [myContext]);
-
-    console.log(`activeButton ${myContext?.activeButton}`);
-    console.log(`activeIndx ${myContext?.activeButtonIndex}`);
+    }, [myContext, isCounting]);
 
     return (
-        <header className="flex flex-col gap-8  lg:gap-12 mt-[20px]  lg:mt-[70px]">
+        <header className="flex flex-col gap-8  lg:gap-12 pt-[20px]  ">
             <h1 className="text-hawkesBlue text-[24px] text-center">pomodoro</h1>
             <nav className="bg-darkBlueBlack rounded-[16px] w-[327px] m-auto p-[5px] relative z-50">
                 <ul className="flex items-center justify-between">
@@ -33,7 +30,6 @@ function Header() {
                         >
                             <button
                                 style={myContext?.activeButtonIndex === index ? { background: myContext.savedStates.activeColor, color: "rgba(30, 33, 63, 1)" } : { color: "rgba(215, 224, 255, 1)" }}
-                                // className={`${myContext?.activeButtonIndex === index ? `bg-[${myContext?.savedStates.activeColor}]` : ""}`}
                                 onClick={() => handleClick(index)}
                             >
                                 {title}
