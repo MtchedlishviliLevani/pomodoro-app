@@ -5,7 +5,6 @@ interface Props {
 }
 function Button({ setIsOpenSettings }: Props) {
     const myContext = useMyContext();
-    console.log(myContext?.savedStates);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();

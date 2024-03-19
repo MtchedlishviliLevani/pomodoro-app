@@ -22,7 +22,6 @@ function Timer({ setIsCounting, isCounting }: Props) {
                         clearInterval(countDownSeconds);
                         setIsCounting(false)
                         return (myContext?.activeButton ?? 0) * 60
-                        // setMiliSeconds(myContext?.activeButton ?? 0 * 60000)
                     } else {
                         return prevSeconds && prevSeconds - 1;
                     }
@@ -31,7 +30,6 @@ function Timer({ setIsCounting, isCounting }: Props) {
             return () => clearInterval(countDownSeconds);
         }
     }, [isCounting, seconds, myContext, setIsCounting]);
-
     const minutes = Math.floor((seconds ?? 0) / 60);
     const remainingSeconds = Math.floor(((seconds ?? 0)) % 60);
     const totalSeconds = (myContext?.activeButton ?? 0) * 60;
@@ -41,8 +39,9 @@ function Timer({ setIsCounting, isCounting }: Props) {
 
     const startNstopClick = () => {
         setIsCounting((start) => !start);
-
     };
+
+
     return (
         <div
             style={{
@@ -51,7 +50,7 @@ function Timer({ setIsCounting, isCounting }: Props) {
             className="relative z-40 shadow-custom grid place-items-center w-[300px] h-[300px] lg:w-[370px] lg:h-[370px] rounded-[50%] m-auto"
         >
             <svg className="absolute rotate-[270deg] z-[41]" viewBox="0 0 100 100">
-                <circle className="stroke-[3px] "
+                <circle className="stroke-[3px] transition1"
                     cx="50"
                     cy="50"
                     r="40.8"
@@ -74,7 +73,7 @@ function Timer({ setIsCounting, isCounting }: Props) {
                         <span
                             style={{ "--textColor": myContext?.savedStates.activeColor } as CSSProperties}
                             onClick={startNstopClick}
-                            className={`hover:text-[--textColor] cursor-pointer font-bold text-[16px] text-center tracking-[7px] text-hawkesBlue uppercase`}
+                            className={`hover:text-[--textColor] transition-text duration-300 cursor-pointer font-bold text-[16px] text-center tracking-[7px] text-hawkesBlue uppercase`}
                         >
                             {isCounting ? "Pause" : "Start"}
                         </span>

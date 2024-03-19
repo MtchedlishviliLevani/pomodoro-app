@@ -89,7 +89,7 @@ function Settings({ setIsOpenSettings, isOpenSettings }: Props) {
                                                 className={`${myContext?.activeFont == font
                                                     ? "bg-darkBlueBlack [&>span]:text-white [&>span]:font-bold"
                                                     : "bg-ghostWhite [&>span]:text-darkBlueBlack [&>span]:font-semibold [&>span]:opacity-70"
-                                                    } group  place-items-center  cursor-pointer border-solid border-[4px] box-content  hover:outline-hawkesBlue hover:outline-[1px] hover:outline-double border-white w-[40px] h-[40px] rounded-[50%] grid  cursor-pointe`}
+                                                    } group  place-items-center  cursor-pointer border-solid border-[4px] box-content   hover:outline-hawkesBlue hover:outline-[1px] hover:outline-double border-white w-[40px] h-[40px] rounded-[50%] grid  cursor-pointe`}
                                                 key={index}
                                                 onClick={() => activeFonthandleClick(index)}
                                             >

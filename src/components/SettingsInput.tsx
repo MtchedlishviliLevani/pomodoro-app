@@ -30,7 +30,7 @@ function SettingsInput({ heading, inputValue, setInputValue }: InputProps) {
             <div className="flex items-center bg-ghostWhite pl-[10px] w-[140px] py-[8px] rounded-[8px] ">
                 <input
                     className="bg-inherit text-darkBlueBlack font-bold outline-none w-[100px] "
-                    type="number" value={inputValue} minLength={2} min={0} onChange={(e) => {
+                    type="number" value={inputValue} minLength={2} min={1} onChange={(e) => {
                         const inputValue = e.target.valueAsNumber;
                         if (!isNaN(inputValue) && inputValue >= 0 && setInputValue) {
                             setInputValue(inputValue);

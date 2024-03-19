@@ -23,6 +23,9 @@
 }
 
 @layer components {
+  .transition1 {
+    transition: stroke-dashoffset 1s linear, stroke 0.8s linear;
+  }
   /* .cycle {
     background: conic-gradient(#7d2ae8 360deg, #ededed 0deg);
   } */
